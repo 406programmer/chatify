@@ -1,0 +1,21 @@
+{
+  "name": "chatify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+   "build":"npm i --prefix backend && npm i --prefix frontend && npm run build --prefix frontend" ,
+   "start":"npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/406programmer/chatify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/406programmer/chatify/issues"
+  },
+  "homepage": "https://github.com/406programmer/chatify#readme"
+}
