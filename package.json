@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node":">=20.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
-   "build":"npm i --prefix backend && npm i --prefix frontend --include=dev && npm run build --prefix frontend" ,
-   "start":"npm run start --prefix backend"
+    "build": "npm i --prefix backend && npm i --prefix frontend --include=dev && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/406programmer/chatify/issues"
   },
-  "homepage": "https://github.com/406programmer/chatify#readme"
+  "homepage": "https://github.com/406programmer/chatify#readme",
+  "dependencies": {
+    "resend": "^6.0.2"
+  }
 }
