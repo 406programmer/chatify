@@ -3,7 +3,7 @@ import User from "../models/User.js";
 import { generateToken } from "../lib/utils.js";
 import { sendWelcomeEmail } from "../../emails/emailHandlers.js";
 import ENV from "../lib/env.js";
-
+import cloudinary from "../lib/cloudinary.js";
 export async function signup(req, res) {
   const { fullName, email, password } = req.body;
 
@@ -86,7 +86,6 @@ export async function logout(_, res) {
   res.status(200).json({ message: "Logged out successfully" });
 }
 export async function updateProfile(req, res) {
-  res.status(201).json({ message: "Profile is updated successfully" });
   try {
     const { profilePic } = req.body;
     if (!profilePic)
@@ -94,10 +93,10 @@ export async function updateProfile(req, res) {
 
     const userId = req.user._id;
     const uploadResponse = await cloudinary.uploader.upload(profilePic);
-    console.log("uploadResponse", uploadResponse);
+    // console.log("uploadResponse", uploadResponse);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profilePic: uploadResponse.secure_url },
+      {profilePic: uploadResponse.secure_url },
       { new: true },
     ).select("-password");
     res.status(200).json(updatedUser);
