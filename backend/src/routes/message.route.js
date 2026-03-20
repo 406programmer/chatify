@@ -7,6 +7,7 @@ const router = express.Router()
 
 //the middlewares exceute in order - so requests get rate limited first , then authenticated.
 router.use(arcjetProtection,protectRoute)
+// router.use(protectRoute)
 router.get("/contacts",getAllContacts)
 router.get("/chats",getChatPartners)
 router.get("/:id",getMessagesByUserId)
