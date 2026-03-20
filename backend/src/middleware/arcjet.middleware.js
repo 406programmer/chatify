@@ -1,4 +1,5 @@
 import aj from "../lib/arcjet.js";
+import { isSpoofedBot } from "@arcjet/inspect";
 
 export const arcjetProtection = async (req, res, next) => {
   try {
@@ -26,6 +27,10 @@ export const arcjetProtection = async (req, res, next) => {
     if (decision.results.some(isSpoofedBot)) {
       return res.status(403).json({error:"Spoofed bot detected", message: "Malicious bot activity detected." });
     }
+
     next();
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error in arcjetProtection middleware:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
