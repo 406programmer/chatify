@@ -14,12 +14,18 @@ const messageSchema = new mongoose.Schema(
     },
     text: {
       type: String,
-      trim:true,
-      maxlength: 2000
+      trim: true,
+      maxlength: 2000,
     },
     image: {
       type: String,
     },
+    status: {
+      type: String,
+      enum: ["sent", "delivered", "seen"],
+      default: "sent",
+    },
+    seenAt: { type: Date },
   },
   { timestamps: true },
 );

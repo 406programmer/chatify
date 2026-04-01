@@ -60,6 +60,7 @@ export const sendMessage = async (req, res) => {
       receiverId,
       text,
       image: imageUrl,
+      status: "delivered",
     });
     await newMessage.save();
     //todo : send message in real time if user is online

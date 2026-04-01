@@ -58,15 +58,30 @@ export default function ChatContainer() {
                     })}
                   </p>
                 </div>
+                <div className="chat-footer opacity-50">
+                  {message.receiverId === authUser._id
+                    ? ""
+                    : message.status === "seen" && message.seenAt
+                      ? `seen at ${new Date(message.seenAt).toLocaleTimeString(
+                          "en-IN",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          },
+                        )}`
+                      : message.status}
+                </div>
               </div>
             ))}
-            <div ref={messageEndRef}/>
+            <div ref={messageEndRef} />
           </div>
-        ) :isMessageLoading? <MessagesLoadingSkeleton/>: (
+        ) : isMessageLoading ? (
+          <MessagesLoadingSkeleton />
+        ) : (
           <NoChatHistoryPlaceholder name={selectedUser.fullName} />
         )}
       </div>
-      <MessageInput/>
+      <MessageInput />
     </>
   );
 }

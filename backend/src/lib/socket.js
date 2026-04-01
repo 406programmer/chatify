@@ -3,6 +3,7 @@ import http from "http";
 import express from "express";
 import ENV from "./env.js";
 import { socketAuthMiddleware } from "../middleware/socket.auth.middleware.js";
+import Message from "../models/Message.js";
 
 const app=express()
 const server = http.createServer(app)
@@ -38,6 +39,30 @@ io.on("connection",(socket)=>{
         delete userSocketMap[userId]
         io.emit("getOnlineUsers",Object.keys(userSocketMap))
     })
+
+    socket.on("mark-as-seen", async ({ senderId, userId }) => {
+      try {
+        // 1. Update all messages in this conversation as 'seen'
+        await Message.updateMany(
+          {
+            senderId: senderId, // The person who sent the messages
+            receiverId: userId, // The current user who just opened them
+            status: { $ne: "seen" },
+          },
+          { $set: { status: "seen", seenAt: new Date().toISOString() } },
+        );
+        const senderSocketId = getReceiverSocketId(senderId);
+        if (senderSocketId) {
+          io.to(senderSocketId).emit("messages-seen-update", {
+            seenBy: userId, // The person who just read the messages
+          });
+        }
+
+      } catch (error) {
+        console.error("Error updating seen status:", error);
+      }
+    });
+   
          
 })
 

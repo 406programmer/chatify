@@ -21,6 +21,7 @@ export const useAuthStore = create((set,get) => ({
 
     } catch (error) {
       console.log("Error in authCheck", error);
+      toast.error(error.response?.data?.message || "Authentication check failed");
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
