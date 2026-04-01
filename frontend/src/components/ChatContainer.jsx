@@ -28,10 +28,26 @@ export default function ChatContainer() {
   return (
     <>
       <ChatHeader />
+
       <div className="flex-1 px-6 overflow-y-auto py-8">
         {messages.length > 0 && !isMessageLoading ? (
           <div className="max-w-3xl mx-auto space-y-6">
-            {messages.map((message) => (
+            {messages.map((message, index) => {
+
+            const messageDate = new Date(message.createdAt).toDateString();
+            const previousMessageDate = index > 0 
+              ? new Date(messages[index - 1].createdAt).toDateString() 
+              : null;
+              const isNewDay = messageDate !== previousMessageDate;
+              return(
+                <div key={message._id} >                
+               {isNewDay && (
+                  <div className="flex justify-center my-8">
+                    <span className="bg-slate-700 text-slate-300 text-xs px-4 py-1 rounded-full font-medium uppercase tracking-wider">
+                      {formatHeaderDate(message.createdAt)}
+                    </span>
+                  </div>
+                )}
               <div
                 key={message._id}
                 className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
@@ -58,21 +74,23 @@ export default function ChatContainer() {
                     })}
                   </p>
                 </div>
-                <div className="chat-footer opacity-50">
+                <div className="chat-footer mt-1 text-xs opacity-40">
                   {message.receiverId === authUser._id
                     ? ""
                     : message.status === "seen" && message.seenAt
-                      ? `seen at ${new Date(message.seenAt).toLocaleTimeString(
-                          "en-IN",
-                          {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          },
-                        )}`
-                      : message.status}
+                    ? `seen at ${new Date(message.seenAt).toLocaleTimeString(
+                      "en-IN",
+                      {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      },
+                    )}`
+                    : message.status}
                 </div>
               </div>
-            ))}
+                    </div>
+              )
+})}
             <div ref={messageEndRef} />
           </div>
         ) : isMessageLoading ? (
@@ -82,6 +100,27 @@ export default function ChatContainer() {
         )}
       </div>
       <MessageInput />
+    
     </>
   );
 }
+
+const formatHeaderDate = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  // Set times to 0 to compare just the calendar dates
+  const diffInDays = Math.floor(
+    (now.setHours(0, 0, 0, 0) - new Date(date).setHours(0, 0, 0, 0)) /
+      (1000 * 60 * 60 * 24),
+  );
+
+  if (diffInDays === 0) return "Today";
+  if (diffInDays === 1) return "Yesterday";
+
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
