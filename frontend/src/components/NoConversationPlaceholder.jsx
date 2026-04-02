@@ -2,7 +2,7 @@ import { MessageCircleIcon } from "lucide-react";
 
 const NoConversationPlaceholder = () => {
   return (
-    <div className="lg:flex lg:flex-col hidden items-center justify-center lg:h-full text-center p-6">
+    <div className="lg:flex flex-col hidden items-center justify-center h-full text-center p-6">
       <div className="size-20 bg-cyan-500/20 rounded-full flex items-center justify-center mb-6">
         <MessageCircleIcon className="size-10 text-cyan-400" />
       </div>
